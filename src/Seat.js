@@ -4,7 +4,7 @@ export default function Seat({info}){
     console.log(info.isAvailable)
     return(
         <Seats>
-         <div className="true {info.isAvailable}" > {info.name} </div> 
+         <div className="true" > {info.name} </div> 
          </Seats>
     )
 }
