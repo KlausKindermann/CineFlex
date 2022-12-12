@@ -1,38 +1,36 @@
 import styled from "styled-components"
+import { seatColors } from "./Colors"
+import { useEffect, useState } from "react"
 
-export default function Seat({info}){
-    console.log(info.isAvailable)
-    return(
-        <Seats>
-         <div className="true" > {info.name} </div> 
-         </Seats>
+export default function Seat({ seat, handleSeats, isSelected }) {
+    const [status, setStatus] = useState("selected")
+    
+    useEffect(() => {
+        if (isSelected) {
+            setStatus("selected")
+        } else if (seat.isAvailable) {
+            setStatus("available")
+        } else {
+            setStatus("unavailable")
+        }
+    }, [isSelected, seat])
+
+    return (
+        <Seats data-text="seat" status={status} onClick={() => handleSeats(seat)}>
+            {seat.name}
+        </Seats>
     )
 }
 const Seats = styled.div`
-.true{
+border: 1px solid ${props => seatColors[props.status].border};
+background-color: ${props => seatColors[props.status].background};
+height: 25px;
+width: 25px;
+border-radius: 25px;
 font-family: 'Roboto';
-font-size: 16px;
-width: 26px;
-height: 26px;
-background-color: #C3CFD9;
-border: 1px solid #808F9D;
-border-radius: 12px;
+font-size: 11px;
 display: flex;
 align-items: center;
 justify-content: center;
-margin-left: 8px;
-}
-.false {
-font-family: 'Roboto';
-font-size: 16px;
-width: 26px;
-height: 26px;
-background-color: #C3CFD9;
-border: 1px solid #808F9D;
-border-radius: 12px;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-left: 8px;
-}
+margin: 5px 3px;
 `

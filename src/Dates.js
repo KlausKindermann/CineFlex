@@ -8,7 +8,7 @@ export default function Dates({ info }) {
             <Day> {info.weekday} - {info.date} </Day>
             <TimeList>
                 {time.map((movieTime) =>
-                    <Time key={movieTime.id}>
+                    <Time data-text="showtime" key={movieTime.id}>
                         <Link to={`/seats/${movieTime.id}`}>
                             {movieTime.name}
                         </Link>

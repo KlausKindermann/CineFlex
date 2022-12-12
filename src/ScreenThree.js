@@ -3,16 +3,18 @@ import axios from "axios";
 import Seat from "./Seat"
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import UserData from "./UserData";
 
-export default function ScreenThree() {
+export default function ScreenThree({setSuccessInfo}) {
     const [chairs, setChairs] = useState([])
     const [assentos, setSeats] = useState([])
     const [data, setData] = useState([])
     const [movie, setMovie] = useState([])
     const { seatsID } = useParams()
+    const [selectedSeats, setSelectedSeats] = useState([])
 
     useEffect(() => {
-        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${seatsID}/seats`);
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${seatsID}/seats`);
         promise.then((res) => {
             setSeats(res.data)
             setChairs(res.data.seats)
@@ -24,14 +26,33 @@ export default function ScreenThree() {
         })
 
     }, [])
-    console.log(assentos)
+
+    function handleSeats(seat) {
+        if (seat.isAvailable === false) {
+            alert("Esse assento não está disponível")
+        } else {
+            const isSelected = selectedSeats.some(s => seat.id === s.id)
+            if (isSelected) {
+                const newList = selectedSeats.filter(s => seat.id !== s.id)
+                setSelectedSeats(newList)
+            } else {
+                setSelectedSeats([...selectedSeats, seat])
+            }
+        }
+    }
 
     return (
         <ScreenSeatsSelect>
             <Header>CineFlex</Header>
             <BoxAction>Selecione o(s) assento(s)</BoxAction>
             <Seats>
-                {chairs.map((info) => <Seat key={chairs.id} info={info} />)}
+                {chairs.map((seat) =>
+                    <Seat
+                        key={seat.id}
+                        seat={seat}
+                        handleSeats={handleSeats}
+                        isSelected={selectedSeats.some(s => seat.id === s.id)}
+                    />)}
             </Seats>
             <SeatsInfo>
                 <Info>
@@ -47,16 +68,13 @@ export default function ScreenThree() {
                     <p>Indiponível</p>
                 </Info>
             </SeatsInfo>
-            <User>
-                <p>Nome do comprador :</p>
-                <input placeholder="   Digite seu nome..."></input>
-            </User>
-            <User>
-                <p>CPF do comprador :</p>
-                <input placeholder="   Digite seu CPF..."></input>
-            </User>
-            <Link to={`/complete/${assentos.id}`}><Confirm>Reservar assento(s)</Confirm></Link>
-            <Footer>
+            <UserData
+                assentos={assentos}
+                selectedSeats={selectedSeats}
+                setSelectedSeats={setSelectedSeats}
+                setSuccessInfo={setSuccessInfo}
+            />
+            <Footer data-text="footer" >
                 < img src={movie.posterURL} alt="Filme Escolhido" />
                 <Texto>
                     <p>{movie.title}</p>
@@ -66,54 +84,6 @@ export default function ScreenThree() {
         </ScreenSeatsSelect>
     )
 }
-const Confirm = styled.div`
-width: 200px;
-height: 50px;
-background-color: rgb(255, 123, 0);
-border-radius: 3px;
-color: white;
-margin-top: 30px;
-margin-left: 87px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-weight: 400;
-text-decoration: none;
-`
-const User = styled.div`
-width: 375px;
-height: 90px;
-margin-top: 18px;
-p{
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 300;
-font-size: 20px;
-line-height: 30px;
-color: white;
-margin-left: 30px;
-}
-input{
-width: 310px;
-height: 45px;
-background: #FFFFFF;
-border: 1px solid rgb(17, 17, 17);
-border-radius: 3px;
-margin-left: 30px;
-font-family: 'Roboto';
-font-weight: 400;
-font-size: 18px;
-line-height: 21px;
-display: flex;
-align-items: center;
-color: #AFAFAF;
-}
-`
-/* < img src = { assentos.movie.posterURL } alt = "Filme Escolhido" />
-     <Texto>
-         <p>{assentos.movie.title}</p>
-         <p>{assentos.day.weekday} - {assentos.day.date}</p>
-     </Texto>*/
 const Texto = styled.div`
 p{
 font-family: 'Roboto';

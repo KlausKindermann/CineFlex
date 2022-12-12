@@ -1,50 +1,29 @@
 
 import styled from "styled-components"
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-export default function App() {
-    const { finalID } = useParams()
-    const [data, setData] = useState([])
-    const [movie, setMovie] = useState([])
-    const [dados, setDados] = useState([])
-
-    useEffect(() => {
-        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${finalID}/seats`);
-        promise.then((res) => {
-            setDados(res.data)
-            setData(res.data.day)
-            setMovie(res.data.movie)
-            console.log(dados)
-        })
-        promise.catch((err) => {
-            console.log(err.response.data)
-        })
-
-    }, [])
-
+export default function ScreenFour({ successInfo }) {
+    const { movie, date, hour, buyer, cpf, seats } = successInfo
 
     return (
         <ScreenComplete>
             <Header>CineFlex</Header>
             <BoxAction>Pedido feito com sucesso!</BoxAction>
-            <Info>
+            <Info data-text="movie-info" >
                 <h1>Filme e sessão</h1>
-                <p>{movie.title}</p>
-                <p>{data.weekday} - {data.date}</p>
+                <p>{movie}</p>
+                <p>{date} - {hour}</p>
             </Info>
-            <Info>
+            <Info data-text="seats-info" >
                 <h1>Ingressos</h1>
-                <p>Assento 13</p>
-                <p>Assento 14</p>
+                {seats.map(s => <p key={s}>Assento {s}</p>)}
             </Info>
-            <Info>
+            <Info data-text="client-info" >
                 <h1>Comprador</h1>
-                <p>Klaus</p>
-                <p>14097592963</p>
-            </Info> 
-            <Link to="/"><Home> Voltar pra home </Home></Link>
+                <p>Nome: {buyer}</p>
+                <p>CPF: {cpf}</p>
+            </Info>
+            <Link to="/"><Home data-text="go-home-btn"> Voltar pra home </Home></Link>
         </ScreenComplete>
     )
 }

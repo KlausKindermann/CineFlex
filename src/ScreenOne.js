@@ -7,7 +7,7 @@ export default function ScreenOne() {
     const [posters, setPosters] = useState([])
 
     useEffect(() => {
-        const URL = "https://mock-api.driven.com.br/api/v5/cineflex/movies";
+        const URL = "https://mock-api.driven.com.br/api/v8/cineflex/movies";
         const promise = axios.get(URL);
         promise.then((res) => {
             setPosters(res.data)
@@ -24,7 +24,7 @@ export default function ScreenOne() {
             <Header>CineFlex</Header>
             <BoxAction>Selecione o filme</BoxAction>
             <ContainerFilms>
-                {posters.map((img) => <Movies key={img.id} img={img} />)}
+                {posters.map((img) => <Movies data-text="movie" key={img.id} img={img} />)}
             </ContainerFilms>
         </ScreenMovieSelect>
     )
@@ -48,7 +48,7 @@ position: fixed;
 top: 0;
 `
 const ScreenMovieSelect = styled.div`
-width: 375px;
+width: 800px;
 background-color: rgb(88, 88, 88);
 `
 const ContainerFilms = styled.div`

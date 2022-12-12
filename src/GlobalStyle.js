@@ -34,7 +34,6 @@ const GlobalStyle = createGlobalStyle`
     body {
         line-height: 1;
         width: 500px;
-        margin: 0 auto;
         background-color: rgb(88, 88, 88);;
     }
     ol, ul {

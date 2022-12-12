@@ -10,7 +10,7 @@ export default function ScreenTwo() {
     const {sessionsID} = useParams()
 
     useEffect(() => {
-        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${sessionsID}/showtimes`);
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${sessionsID}/showtimes`);
         promise.then((res) => {
             setHorarios(res.data.days)
             setMovie(res.data)
@@ -26,24 +26,15 @@ export default function ScreenTwo() {
             <Header>CineFlex</Header>
             <BoxAction>Selecione o horário</BoxAction>
             <SessionsList>
-               {horarios.map((info) => <Dates key={horarios.id} info={info} /> )} 
+               {horarios.map((info) => <Dates data-text="movie-day" key={horarios.id} info={info} /> )} 
             </SessionsList>
-            <Footer>
+            <Footer data-text="footer" >
                 <img src={movie.posterURL} />
                 <p>{movie.title}</p>
             </Footer>
         </ScreenTimeSelect>
     )
 }
-
-/*<Sessions>
-    <Day> Quinta-feira - 24/10/2022 </Day>
-    <TimeList>
-        <Time>17:50</Time>
-        <Time>18:50</Time>
-        <Time>19:50</Time>
-    </TimeList>
-</Sessions>*/
 
 const Footer = styled.div`
 width: 375px;

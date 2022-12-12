@@ -15,9 +15,9 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<ScreenOne />} />
-                    <Route path="/sessions/:sessionsID" element={<ScreenTwo />} />
-                    <Route path="/seats/:seatsID" element={<ScreenThree />} />
-                    <Route path="/complete/:finalID" element={<ScreenFour />} />
+                    <Route path="/sessoes/:sessionsID" element={<ScreenTwo />} />
+                    <Route path="/assentos/:seatsID" element={<ScreenThree />} />
+                    <Route path="/sucesso" element={<ScreenFour />} />
                 </Routes>
             </BrowserRouter>
         </Screen>
@@ -25,5 +25,5 @@ export default function App() {
 }
 const Screen = styled.div`
 height: 877px;
+width: 375px;
 `
-   /*<div className="ScreenComplete"></div>*/
